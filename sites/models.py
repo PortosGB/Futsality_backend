@@ -1,9 +1,6 @@
-
 import logging as lg
 
 from .exts import db
-
-
 
 
 class User(db.Model):
@@ -15,11 +12,7 @@ class User(db.Model):
     admin = db.Column(db.Boolean)
 
 
-def init_db():
-    db.drop_all()
-    db.create_all()
-    db.session.add(User(email="oui", firstname='alex', lastname='test', admin=False, password="lol"))
+def seed_db():
+    db.session.add(User(email="test@test.fr", firstname='Alex', lastname='Dupont', admin=False, password="passsword"))
     db.session.commit()
     lg.warning('DB INITIALISZED')
-
-

@@ -13,6 +13,7 @@ def index():
     for user in users:
         user_data = {}
         user_data['firstname'] = user.firstname
+        user_data['last_name'] = user.firstname
         user_data['password'] = user.password
         user_data['admin'] = user.admin
         output.append(user_data)

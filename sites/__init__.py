@@ -6,4 +6,5 @@ from . import models
 
 @app.cli.command("init_db")
 def init_db():
-    models.init_db()
+    manage.init_db()
+    models.seed_db()

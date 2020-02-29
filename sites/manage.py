@@ -1,8 +1,11 @@
-from flask import Flask, jsonify
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 from .exts import db
-from .models import User
 from .urls import router
+
+
+def init_db():
+    db.drop_all()
+    db.create_all()
 
 
 def register_extensions(_app):
