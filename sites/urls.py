@@ -4,17 +4,12 @@ from .models import User
 router = Blueprint('router', __name__)
 
 
+# first test route
+
 @router.route('/')
 def index():
     users = User.query.all()
-
     output = []
-
     for user in users:
-        user_data = {}
-        user_data['firstname'] = user.firstname
-        user_data['last_name'] = user.firstname
-        user_data['password'] = user.password
-        user_data['admin'] = user.admin
-        output.append(user_data)
+        output.append(user.to_dict())
     return jsonify({'users': output})
