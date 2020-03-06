@@ -45,10 +45,11 @@ class User(db.Model, CRUD):
 
 class Team(db.Model, CRUD):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(25))
+    name = db.Column(db.String(25), nullable=False, unique=True)
     # no foreign key here because of AmbiguousForeignKeysError, needs to be fixed later
     captain_id = db.Column(db.Integer, nullable=False, unique=True)
     players = db.relationship('User', backref="team")
+    bookings = db.relationship('Booking', backref="team")
 
     def to_dict(self):
         return {
@@ -56,4 +57,23 @@ class Team(db.Model, CRUD):
             'name': self.name,
             'captain_id': self.captain_id,
             'players': [player.email for player in self.players]
+        }
+
+
+class Booking(db.Model, CRUD):
+    id = db.Column(db.Integer, primary_key=True)
+    side = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    booking_date = db.Column(db.Date, nullable=False)
+    booking_start_hour = db.Column(db.String(6), nullable=False)
+    team_id = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'created_at': self.created_at,
+            'side': self.side,
+            'booking_date': self.booking_date,
+            'booking_start_hour': self.booking_start_hour,
+            'team_id': self.team_id
         }

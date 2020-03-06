@@ -1,7 +1,9 @@
 # This file will contains all the seeds for the DB, the seed_db method is launched by the cli.command("init_db")
-from .exts import db
+# TODO refactor this file
 import logging as lg
-from .models import User, Team
+import datetime
+from .exts import db
+from .models import User, Team, Booking
 
 
 def seed_db():
@@ -27,3 +29,9 @@ def seed_teams(user_a, user_b):
     user_a.save()
     user_b.team_id = team_a.id
     user_b.save()
+    seed_bookings(team_a)
+
+
+def seed_bookings(team_a):
+    booking_a = Booking(side=1, booking_date=datetime.date(2020, 3, 13), booking_start_hour="15:00", team_id=team_a.id)
+    booking_a.save()
