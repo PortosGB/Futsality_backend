@@ -77,3 +77,24 @@ class Booking(db.Model, CRUD):
             'booking_start_hour': self.booking_start_hour,
             'team_id': self.team_id
         }
+
+
+class Notification(db.Model, CRUD):
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(10), nullable=False)
+    answered = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    sender_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    recipient_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    sender = relationship("User", foreign_keys=[sender_id])
+    recipient = relationship("User", foreign_keys=[recipient_id])
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'created_at': self.created_at,
+            'type': self.type,
+            'sender': self.sender.email,
+            'recipient': self.recipient.email,
+            'answered': self.answered
+        }

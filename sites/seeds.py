@@ -3,7 +3,7 @@
 import logging as lg
 import datetime
 from .exts import db
-from .models import User, Team, Booking
+from .models import User, Team, Booking, Notification
 
 
 def seed_db():
@@ -30,8 +30,14 @@ def seed_teams(user_a, user_b):
     user_b.team_id = team_a.id
     user_b.save()
     seed_bookings(team_a)
+    seed_notif(user_a, user_b)
 
 
 def seed_bookings(team_a):
     booking_a = Booking(side=1, booking_date=datetime.date(2020, 3, 13), booking_start_hour="15:00", team_id=team_a.id)
     booking_a.save()
+
+
+def seed_notif(user_a, user_b):
+    notif_a = Notification(sender=user_a, recipient=user_b, type="invitation")
+    notif_a.save()

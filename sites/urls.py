@@ -1,10 +1,10 @@
 from flask import Blueprint, jsonify
-from .models import User, Team, Booking
+from .models import User, Team, Booking, Notification
 
 router = Blueprint('router', __name__)
 
 
-# first test route
+# first test route to check seeded data
 
 @router.route('/')
 def index():
@@ -18,4 +18,7 @@ def index():
     bookings = Booking.query.all()
     for booking in bookings:
         output.append(booking.to_dict())
+    notifs = Notification.query.all()
+    for n in notifs:
+        output.append(n.to_dict())
     return jsonify({'users': output})
