@@ -1,10 +1,14 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from .models import User, Team, Booking, Notification
-
+import jwt
+import datetime
+import sites.controllers.user_controller as UC
+from .controllers import auth
 router = Blueprint('router', __name__)
 
 
 # first test route to check seeded data
+
 
 @router.route('/')
 def index():
@@ -22,3 +26,8 @@ def index():
     for n in notifs:
         output.append(n.to_dict())
     return jsonify({'users': output})
+
+
+@router.route('/login', methods=['POST'])
+def login():
+    auth.authenticate(request)

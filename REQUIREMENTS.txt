@@ -4,3 +4,4 @@ wheel
 flask
 flask_sqlalchemy
 pycodestyle
+jwt
