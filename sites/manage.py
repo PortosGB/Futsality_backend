@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, jsonify
 from .exts import db
 from .urls import router
+
 
 
 def init_db():
