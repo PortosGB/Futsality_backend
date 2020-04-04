@@ -68,3 +68,11 @@ def user(current_user):
         return uc.get(email)
     return uc.get_many()
 
+
+@router.route('/user', methods=['DELETE'])
+@token_required
+def user(current_user):
+    email = request.args.get('email')
+    if (not current_user.admin) and (current_user.email != email):
+        return jsonify({'message': 'Unauthorized'}), 403
+    return uc.delete(email)

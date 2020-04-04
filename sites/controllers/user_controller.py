@@ -34,3 +34,12 @@ def get_many():
     for user in users:
         output.append(user.to_dict())
     return jsonify({'users': output}), 200
+
+
+def delete(email):
+    try:
+        user = User.query.filter(User.email == email)[0]
+        user.destroy()
+        return jsonify({'message': 'User successfully deleted'}), 200
+    except IndexError:
+        return jsonify({'error': 'User not found'}), 404
