@@ -6,6 +6,7 @@ from functools import wraps
 import datetime
 import sites.controllers.user_controller as uc
 from .controllers import auth
+
 router = Blueprint('router', __name__)
 
 
@@ -23,14 +24,16 @@ def token_required(f):
         except Exception as e:
             return jsonify({'message': 'Token is invalid!'}), 401
         return f(current_user, *args, **kwargs)
+
     return decorated
+
 
 # first test route to check seeded data
 
 
 @router.route('/')
-@token_required
-def index(current_user):
+#@token_required
+def index():
     users = User.query.all()
     output = []
     for user in users:
@@ -55,3 +58,13 @@ def login():
 @router.route('/user', methods=['POST'])
 def create_user():
     return uc.create_user()
+
+
+@router.route('/user', methods=['GET'])
+@token_required
+def user(current_user):
+    email = request.args.get('email')
+    if email:
+        return uc.get(email)
+    return uc.get_many()
+

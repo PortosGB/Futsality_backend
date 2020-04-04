@@ -27,7 +27,8 @@ def authenticate():
     token = jwt.encode(
         {'id': user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
         app.config['SECRET_KEY'])
-
+    user.last_connection = datetime.datetime.utcnow()
+    user.save()
     return jsonify({'token': token.decode('UTF-8')})
 
 

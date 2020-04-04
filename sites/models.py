@@ -29,17 +29,15 @@ class User(db.Model, CRUD):
         super(User, self).__init__(**kwargs)
 
     def to_dict(self):
-        team = self.team.to_dict() if self.team else None
+        team_id = self.team.id if self.team else None
         return {
             'id': self.id,
             'firstname': self.firstname,
             'lastname': self.firstname,
-            'password': self.password,
             'email': self.email,
-            'admin': self.admin,
             'created_at': self.created_at,
             'last_connection': self.last_connection,
-            'team': team
+            'team': team_id,
         }
 
 
