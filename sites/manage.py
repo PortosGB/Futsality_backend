@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from .exts import db
 from .urls import router
+from flask_cors import CORS
 
 
 
@@ -16,6 +17,7 @@ def register_extensions(_app):
 
 def create_app():
     _app = Flask(__name__)
+    CORS(_app)
     _app.config.from_object('config')
     register_extensions(_app)
     return _app

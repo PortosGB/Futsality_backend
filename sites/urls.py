@@ -1,4 +1,6 @@
 from flask import Blueprint, jsonify, request
+from flask_cors import cross_origin
+
 from .models import User, Team, Booking, Notification
 import jwt
 from flask import current_app as app
@@ -62,7 +64,7 @@ def create_user():
 
 @router.route('/user', methods=['GET'])
 @token_required
-def user(current_user):
+def get_user(current_user):
     email = request.args.get('email')
     if email:
         return uc.get(email)
@@ -71,7 +73,7 @@ def user(current_user):
 
 @router.route('/user', methods=['DELETE'])
 @token_required
-def user(current_user):
+def delete_user(current_user):
     email = request.args.get('email')
     if (not current_user.admin) and (current_user.email != email):
         return jsonify({'message': 'Unauthorized'}), 403
