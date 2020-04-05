@@ -52,7 +52,7 @@ def index():
     return jsonify({'users': output})
 
 
-@router.route('/login', methods=['GET'])
+@router.route('/login', methods=['POST'])
 def login():
     return auth.authenticate()
 

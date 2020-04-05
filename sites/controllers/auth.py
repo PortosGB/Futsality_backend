@@ -17,8 +17,9 @@ def auth_error(status_code, message):
 
 
 def authenticate():
-    email = request.args.get('email')
-    password = request.args.get('password')
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
     user = User.query.filter_by(email=email).first()
     if not user:
         return auth_error(401, 'Unauthorized')
