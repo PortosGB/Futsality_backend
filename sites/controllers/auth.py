@@ -22,9 +22,9 @@ def authenticate():
     password = data['password']
     user = User.query.filter_by(email=email).first()
     if not user:
-        return auth_error(401, 'Unauthorized')
+        return auth_error(401, 'Invalid Credentials')
     if not check_password_hash(user.password, password):
-        return auth_error(401, 'Unauthorized')
+        return auth_error(401, 'Invalid Credentials')
     token = jwt.encode(
         {'id': user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
         app.config['SECRET_KEY'])
