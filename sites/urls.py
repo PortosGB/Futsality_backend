@@ -34,7 +34,7 @@ def token_required(f):
 
 
 @router.route('/')
-#@token_required
+# @token_required
 def index():
     users = User.query.all()
     output = []
@@ -78,3 +78,9 @@ def delete_user(current_user):
     if (not current_user.admin) and (current_user.email != email):
         return jsonify({'message': 'Unauthorized'}), 403
     return uc.delete(email)
+
+
+@router.route('/current_user', methods=['GET'])
+@token_required
+def current_user(current_user):
+    return jsonify({'user': current_user.to_dict()}), 200
