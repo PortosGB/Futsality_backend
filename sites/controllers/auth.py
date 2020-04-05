@@ -30,7 +30,13 @@ def authenticate():
         app.config['SECRET_KEY'])
     user.last_connection = datetime.datetime.utcnow()
     user.save()
-    return jsonify({'token': token.decode('UTF-8')})
+    return jsonify({
+        'token': token.decode('UTF-8'),
+        'id': user.id,
+        'email': user.email,
+        'firstname': user.firstname,
+        'lastname': user.lastname
+    })
 
 
 # def login():
