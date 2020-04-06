@@ -37,11 +37,3 @@ def authenticate():
         'firstname': user.firstname,
         'lastname': user.lastname
     })
-
-
-# def login():
-#     token = jwt.encode(
-#         {'public_id': user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
-#         app.config['SECRET_KEY'])
-#
-#     return jsonify({'token': token.decode('UTF-8')})

@@ -33,9 +33,8 @@ class User(db.Model, CRUD):
         return {
             'id': self.id,
             'firstname': self.firstname,
-            'lastname': self.firstname,
+            'lastname': self.lastname,
             'email': self.email,
-            'created_at': self.created_at,
             'last_connection': self.last_connection,
             'team': team_id,
         }
@@ -92,7 +91,7 @@ class Notification(db.Model, CRUD):
             'id': self.id,
             'created_at': self.created_at,
             'type': self.type,
-            'sender': self.sender.email,
-            'recipient': self.recipient.email,
+            'sender': self.sender_id,
+            'recipient': self.recipient_id,
             'answered': self.answered
         }

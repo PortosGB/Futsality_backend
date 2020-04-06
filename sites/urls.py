@@ -62,25 +62,28 @@ def create_user():
     return uc.create_user()
 
 
-@router.route('/user', methods=['GET'])
+@router.route('/user/', methods=['GET'])
 @token_required
 def get_user(current_user):
-    email = request.args.get('email')
-    if email:
-        return uc.get(email)
+    id = request.args.get('id')
+    if id:
+        return uc.get(id)
     return uc.get_many()
 
 
-@router.route('/user', methods=['DELETE'])
+@router.route('/user/<int:id>', methods=['DELETE'])
 @token_required
-def delete_user(current_user):
-    email = request.args.get('email')
-    if (not current_user.admin) and (current_user.email != email):
-        return jsonify({'message': 'Unauthorized'}), 403
-    return uc.delete(email)
+def delete_user(current_user, id):
+    return uc.delete(current_user, id)
+
+
+@router.route('/user/<int:id>', methods=['PATCH'])
+@token_required
+def update_user(current_user, id):
+    return uc.update(current_user, id)
 
 
 @router.route('/current_user', methods=['GET'])
 @token_required
-def current_user(current_user):
+def current_user(current_user, id):
     return jsonify({'user': current_user.to_dict()}), 200
