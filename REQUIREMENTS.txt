@@ -4,3 +4,5 @@ wheel
 flask
 flask_sqlalchemy
 pycodestyle
+pyjwt
+flask-cors
