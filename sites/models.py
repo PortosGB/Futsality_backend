@@ -18,6 +18,7 @@ class User(db.Model, CRUD):
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(50))
     lastname = db.Column(db.String(50))
+    fullname = db.Column(db.String(101))
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     admin = db.Column(db.Boolean)
@@ -36,6 +37,7 @@ class User(db.Model, CRUD):
             'lastname': self.lastname,
             'email': self.email,
             'last_connection': self.last_connection,
+            'fullname': self.fullname,
             'team': team_id,
         }
 

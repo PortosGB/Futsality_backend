@@ -11,6 +11,7 @@ def update_user_attributes(user, data):
             user.password = hashed_password
         elif hasattr(user, str(key)):
             setattr(user, str(key), value)
+    user.fullname = user.firstname + ' ' + user.lastname
     user.save()
 
 
@@ -23,6 +24,7 @@ def create_user():
         admin=False,
         firstname=data['firstname'],
         lastname=data['lastname'],
+        fullname=data['firstname'] + ' ' + data['lastname']
     )
     new_user.save()
     return jsonify({'message': 'New user created!'}), 201
