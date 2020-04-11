@@ -85,5 +85,5 @@ def update_user(current_user, id):
 
 @router.route('/current_user', methods=['GET'])
 @token_required
-def current_user(current_user, id):
+def current_user(current_user):
     return jsonify({'user': current_user.to_dict()}), 200
