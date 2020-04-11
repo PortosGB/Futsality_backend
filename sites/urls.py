@@ -99,7 +99,29 @@ def current_user(current_user):
     NOTIFICATIONS MANAGEMENT
 '''
 
+
 @router.route('/notification', methods=['POST'])
 @token_required
 def create_notification(current_user):
     return nc.create(current_user)
+
+
+@router.route('/notification', methods=['GET'])
+@token_required
+def get_notification(current_user):
+    id = request.args.get('id')
+    if id:
+        return nc.get(current_user, id)
+    return nc.get_many(current_user)
+
+
+@router.route('/notification/<int:id>', methods=['PATCH'])
+@token_required
+def update_notification(current_user, id):
+    return nc.update(current_user, id)
+
+
+@router.route('/notification/get_many_admin', methods=['GET'])
+@token_required
+def get_notification_admin(current_user):
+    return nc.get_many_admin(current_user)

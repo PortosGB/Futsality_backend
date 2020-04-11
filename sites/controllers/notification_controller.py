@@ -1,4 +1,5 @@
 from flask import request, jsonify
+from sqlalchemy import or_
 from sites.exts import db
 from sites.models import User, Notification
 
@@ -36,3 +37,53 @@ def create(current_user):
 
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+
+
+def get_many(current_user):
+    notifications = Notification.query.filter(or_(Notification.recipient_id == current_user.id,
+                                                  Notification.sender_id == current_user.id))
+    notifications_received = [n.to_dict() for n in notifications if n.recipient_id == current_user.id]
+    notifications_sent = [n.to_dict() for n in notifications if n.sender_id == current_user.id]
+    output = {
+        'notifications_received': notifications_received,
+        'notifications_sent': notifications_sent
+    }
+    return jsonify({'notifications': output}), 200
+
+
+def get(current_user, id):
+    notification = Notification.query.get(id)
+    if not notification:
+        return jsonify({'error': 'Notification not found'}), 404
+    if current_user.id not in [notification.sender_id, notification.recipient_id] and (not current_user.admin):
+        return jsonify({'message': 'Unauthorized'}), 403
+    return jsonify({'notification': notification.to_dict()}), 200
+
+
+def get_many_admin(current_user):
+    if not current_user.admin:
+        return jsonify({'message': 'Unauthorized'}), 403
+    notifications = Notification.query.all()
+    output = []
+    for notification in notifications:
+        output.append(notification.to_dict())
+    return jsonify({'notifications': output}), 200
+
+
+def update(current_user, id):
+    try:
+        notification = Notification.query.get(id)
+        if not notification:
+            return jsonify({'error': 'Notification not found'}), 404
+        if current_user.id not in [notification.sender_id, notification.recipient_id] and (not current_user.admin):
+            return jsonify({'message': 'Unauthorized'}), 403
+        data = request.get_json()
+        if 'message' in data:
+            notification.message = data['message']
+        if 'answered' in data:
+            notification.answered = data['answered']
+        notification.save()
+        return jsonify({'message': 'Notification successfully updated'}), 200
+    except Exception as e:
+        return jsonify({'error': 'Bad Request'}), 400
+
