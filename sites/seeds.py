@@ -18,8 +18,11 @@ def seed_users():
                   admin=False, password=generate_password_hash('password', method='sha256'))
     user_b = User(email="test2@test.fr", firstname='Michel', lastname='Dupont',
                   admin=False, password=generate_password_hash('passsword', method='sha256'))
+    user_c = User(email="test3@test.fr", firstname='Michel', lastname='Dupont',
+                  admin=False, password=generate_password_hash('passsword', method='sha256'))
     user_a.save()
     user_b.save()
+    user_c.save()
     seed_teams(user_a, user_b)
 
 

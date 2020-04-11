@@ -7,6 +7,7 @@ from flask import current_app as app
 from functools import wraps
 import datetime
 import sites.controllers.user_controller as uc
+import sites.controllers.notification_controller as nc
 from .controllers import auth
 
 router = Blueprint('router', __name__)
@@ -57,6 +58,11 @@ def login():
     return auth.authenticate()
 
 
+'''
+    USERS MANAGEMENT
+'''
+
+
 @router.route('/user', methods=['POST'])
 def create_user():
     return uc.create_user()
@@ -87,3 +93,13 @@ def update_user(current_user, id):
 @token_required
 def current_user(current_user):
     return jsonify({'user': current_user.to_dict()}), 200
+
+
+'''
+    NOTIFICATIONS MANAGEMENT
+'''
+
+@router.route('/notification', methods=['POST'])
+@token_required
+def create_notification(current_user):
+    return nc.create(current_user)

@@ -4,6 +4,10 @@ from sites.exts import db
 from sites.models import User
 
 
+def has_team(user):
+    return user.team_id is not None
+
+
 def update_user_attributes(user, data):
     for key, value in data.items():
         if str(key) == "password":
