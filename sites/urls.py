@@ -157,3 +157,14 @@ def get_team(current_user):
 @token_required
 def join_team(current_user):
     return tc.join(current_user)
+
+
+@router.route('/team/quit', methods=['PUT'])
+@token_required
+def quit_team(current_user):
+    return tc.quit_team(current_user)
+
+@router.route('/team/<int:id>', methods=['DELETE'])
+@token_required
+def delete_team(current_user, id):
+    return tc.delete(current_user, id)

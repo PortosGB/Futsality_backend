@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from sqlalchemy import exc
-from sites.models import Team, User
+from sites.models import Team, User, Booking
 
 
 def create(current_user):
@@ -57,3 +57,36 @@ def join(current_user):
         return jsonify({'message': "Player " + str(player.id) + " successfully added to Team " + str(team.id)}), 200
     except Exception as e:
         return jsonify({'error': 'Bad Request'}), 400
+
+
+def quit_team(current_user):
+    if not current_user.has_team():
+        return jsonify({'error': 'User has no team'}), 400
+    if current_user.is_captain():
+        delete_team_bookings(current_user.team)
+        current_user.team.destroy()
+    current_user.team_id = None
+    current_user.save()
+    return jsonify({'message': 'Team successfully leaved'}), 200
+
+
+def delete_team_bookings(team):
+    bookings = Booking.query.filter(Booking.team_id == team.id)
+    for b in bookings:
+        b.destroy()
+    return
+
+
+def delete(current_user, id):
+    try:
+        team = Team.query.get(id)
+        if not team:
+            return jsonify({'error': 'Team not found'}), 404
+        if team.captain_id != current_user.id and (not current_user.admin):
+            return jsonify({'message': 'Unauthorized'}), 403
+        delete_team_bookings(team)
+        team.destroy()
+        return jsonify({'message': 'Team successfully deleted'}), 200
+    except Exception as e:
+        return jsonify({'error': 'Bad Request'}), 400
+
