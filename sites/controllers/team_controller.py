@@ -39,3 +39,21 @@ def get_many(current_user):
     teams = Team.query.all()
     output = [team.to_dict() for team in teams]
     return jsonify({'teams': output}), 200
+
+
+def join(current_user):
+    try:
+        data = request.get_json()
+        team = Team.query.get(data['team_id'])
+        if not team:
+            return jsonify({'error': 'Team not found'}), 404
+        player = User.query.get(data['player_id'])
+        if not player:
+            return jsonify({'error': 'User not found'}), 404
+        if player.has_team():
+            return jsonify({'error': 'User already have a team'}), 400
+        player.team_id = team.id
+        player.save()
+        return jsonify({'message': "Player " + str(player.id) + " successfully added to Team " + str(team.id)}), 200
+    except Exception as e:
+        return jsonify({'error': 'Bad Request'}), 400

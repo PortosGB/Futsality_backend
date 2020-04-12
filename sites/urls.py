@@ -151,3 +151,9 @@ def get_team(current_user):
     if id:
         return tc.get(current_user, int(id))
     return tc.get_many(current_user)
+
+
+@router.route('/team/join', methods=['POST'])
+@token_required
+def join_team(current_user):
+    return tc.join(current_user)
