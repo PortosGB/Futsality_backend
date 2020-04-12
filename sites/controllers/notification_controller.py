@@ -87,3 +87,13 @@ def update(current_user, id):
     except Exception as e:
         return jsonify({'error': 'Bad Request'}), 400
 
+
+def delete(current_user, id):
+    notification = Notification.query.get(id)
+    if not notification:
+        return jsonify({'error': 'Notification not found'}), 404
+    if current_user.id not in [notification.sender_id, notification.recipient_id] and (not current_user.admin):
+        return jsonify({'message': 'Unauthorized'}), 403
+    notification.destroy()
+    return jsonify({'message': 'Notification successfully deleted'}), 200
+

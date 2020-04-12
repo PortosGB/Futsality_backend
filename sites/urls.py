@@ -125,3 +125,8 @@ def update_notification(current_user, id):
 @token_required
 def get_notification_admin(current_user):
     return nc.get_many_admin(current_user)
+
+@router.route('/notification/<int:id>', methods=['DELETE'])
+@token_required
+def delete_notification(current_user, id):
+    return nc.delete(current_user, id)
