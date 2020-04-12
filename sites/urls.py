@@ -69,12 +69,12 @@ def create_user():
     return uc.create_user()
 
 
-@router.route('/user/', methods=['GET'])
+@router.route('/user', methods=['GET'])
 @token_required
 def get_user(current_user):
     id = request.args.get('id')
     if id:
-        return uc.get(id)
+        return uc.get(int(id))
     return uc.get_many()
 
 
@@ -112,7 +112,7 @@ def create_notification(current_user):
 def get_notification(current_user):
     id = request.args.get('id')
     if id:
-        return nc.get(current_user, id)
+        return nc.get(current_user, int(id))
     return nc.get_many(current_user)
 
 
@@ -126,6 +126,7 @@ def update_notification(current_user, id):
 @token_required
 def get_notification_admin(current_user):
     return nc.get_many_admin(current_user)
+
 
 @router.route('/notification/<int:id>', methods=['DELETE'])
 @token_required
@@ -141,3 +142,12 @@ def delete_notification(current_user, id):
 @token_required
 def create_team(current_user):
     return tc.create(current_user)
+
+
+@router.route('/team', methods=['GET'])
+@token_required
+def get_team(current_user):
+    id = request.args.get('id')
+    if id:
+        return tc.get(current_user, int(id))
+    return tc.get_many(current_user)

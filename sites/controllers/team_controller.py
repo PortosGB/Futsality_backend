@@ -1,4 +1,3 @@
-
 from flask import request, jsonify
 from sqlalchemy import exc
 from sites.models import Team, User
@@ -25,3 +24,18 @@ def create(current_user):
     except Exception as e:
         return jsonify({'error': 'Bad Request'}), 400
 
+
+def get(current_user, id):
+    if id != current_user.team_id and (not current_user.admin):
+        return jsonify({'message': 'Unauthorized'}), 403
+    team = Team.query.get(id)
+    if not team:
+        return jsonify({'error': 'Team not found'}), 404
+    return jsonify({'user': team.to_dict()}), 200
+
+
+# TODO remove email from user get_many when not admin (create to_dict_secure method not including private infos
+def get_many(current_user):
+    teams = Team.query.all()
+    output = [team.to_dict() for team in teams]
+    return jsonify({'teams': output}), 200
