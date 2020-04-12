@@ -4,7 +4,6 @@ from .urls import router
 from flask_cors import CORS
 
 
-
 def init_db():
     db.drop_all()
     db.create_all()

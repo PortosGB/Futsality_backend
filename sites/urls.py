@@ -8,6 +8,7 @@ from functools import wraps
 import datetime
 import sites.controllers.user_controller as uc
 import sites.controllers.notification_controller as nc
+import sites.controllers.team_controller as tc
 from .controllers import auth
 
 router = Blueprint('router', __name__)
@@ -130,3 +131,13 @@ def get_notification_admin(current_user):
 @token_required
 def delete_notification(current_user, id):
     return nc.delete(current_user, id)
+
+
+'''
+    TEAM MANAGEMENT
+'''
+
+@router.route('/team', methods=['POST'])
+@token_required
+def create_team(current_user):
+    return tc.create(current_user)

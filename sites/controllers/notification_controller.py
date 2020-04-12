@@ -1,6 +1,5 @@
 from flask import request, jsonify
 from sqlalchemy import or_
-from sites.exts import db
 from sites.models import User, Notification
 
 
