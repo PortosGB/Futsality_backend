@@ -63,7 +63,7 @@ class Team(db.Model, CRUD):
             'id': self.id,
             'name': self.name,
             'captain_id': self.captain_id,
-            'players': [player.email for player in self.players]
+            'players': [player.fullname for player in self.players]
         }
 
 
