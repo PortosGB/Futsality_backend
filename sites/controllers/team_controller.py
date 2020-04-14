@@ -18,7 +18,9 @@ def create(current_user):
         new_team.save()
         owner.team_id = new_team.id
         owner.save()
-        return jsonify({'message': 'Team successfully created'}), 201
+        return jsonify({'message': 'Team successfully created',
+                        'id': new_team.id
+                        }), 201
     except exc.IntegrityError:
         return jsonify({'error': 'Team name [' + data['name'] + '] already taken'}), 400
     except Exception as e:
@@ -89,4 +91,3 @@ def delete(current_user, id):
         return jsonify({'message': 'Team successfully deleted'}), 200
     except Exception as e:
         return jsonify({'error': 'Bad Request'}), 400
-
