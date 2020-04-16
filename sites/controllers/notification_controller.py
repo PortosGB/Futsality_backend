@@ -33,7 +33,6 @@ def create(current_user):
         )
         new_notification.save()
         return jsonify({'message': 'New notification created!'}), 201
-
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 

@@ -9,6 +9,7 @@ import datetime
 import sites.controllers.user_controller as uc
 import sites.controllers.notification_controller as nc
 import sites.controllers.team_controller as tc
+import sites.controllers.booking_controller as bc
 from .controllers import auth
 
 router = Blueprint('router', __name__)
@@ -168,3 +169,29 @@ def quit_team(current_user):
 @token_required
 def delete_team(current_user, id):
     return tc.delete(current_user, id)
+
+
+'''
+    BOOKING MANAGEMENT
+'''
+
+
+@router.route('/booking', methods=['POST'])
+@token_required
+def create_booking(current_user):
+    return bc.create(current_user)
+
+
+@router.route('/booking', methods=['GET'])
+@token_required
+def get_booking(current_user):
+    id = request.args.get('id')
+    if id:
+        return bc.get(int(id))
+    return bc.get_many()
+
+
+@router.route('/booking/<int:id>', methods=['DELETE'])
+@token_required
+def delete_booking(current_user, id):
+    return bc.delete(current_user, id)
