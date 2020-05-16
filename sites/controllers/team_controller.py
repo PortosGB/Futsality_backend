@@ -33,7 +33,7 @@ def get(current_user, id):
     team = Team.query.get(id)
     if not team:
         return jsonify({'error': 'Team not found'}), 404
-    return jsonify({'user': team.to_dict()}), 200
+    return jsonify({'team': team.to_dict()}), 200
 
 
 # TODO remove email from user get_many when not admin (create to_dict_secure method not including private infos
