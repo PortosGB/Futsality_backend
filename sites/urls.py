@@ -37,7 +37,7 @@ def token_required(f):
 
 
 @router.route('/')
-# @token_required
+@token_required
 def index():
     users = User.query.all()
     output = []
