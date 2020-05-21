@@ -1,6 +1,6 @@
 # futsality backend
 
-Small backend platform for futsal management (personal project in progress)
+Small backend platform for futsal management (personal project in progress, for now at early stages of development)
 
 Python >= 3.6 is needed
 
