@@ -41,6 +41,14 @@ class User(db.Model, CRUD):
             'team': team_id,
         }
 
+    def is_captain(self):
+        if self.team and self.team.captain_id == self.id:
+            return True
+        return False
+
+    def has_team(self):
+        return self.team_id is not None
+
 
 class Team(db.Model, CRUD):
     id = db.Column(db.Integer, primary_key=True)
@@ -55,7 +63,7 @@ class Team(db.Model, CRUD):
             'id': self.id,
             'name': self.name,
             'captain_id': self.captain_id,
-            'players': [player.email for player in self.players]
+            'players': [player.fullname for player in self.players]
         }
 
 
@@ -82,6 +90,7 @@ class Notification(db.Model, CRUD):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(10), nullable=False)
     answered = db.Column(db.Boolean, default=False)
+    message = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     sender_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     recipient_id = db.Column(db.Integer, db.ForeignKey("user.id"))
@@ -95,5 +104,6 @@ class Notification(db.Model, CRUD):
             'type': self.type,
             'sender': self.sender_id,
             'recipient': self.recipient_id,
-            'answered': self.answered
+            'answered': self.answered,
+            'message': self.message
         }

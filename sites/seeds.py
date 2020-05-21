@@ -15,11 +15,14 @@ def seed_db():
 
 def seed_users():
     user_a = User(email="test@test.fr", firstname='Alex', lastname='Dupont',
-                  admin=False, password=generate_password_hash('password', method='sha256'))
+                  admin=False, password=generate_password_hash('password', method='sha256'), fullname='Michel Dupont3')
     user_b = User(email="test2@test.fr", firstname='Michel', lastname='Dupont',
-                  admin=False, password=generate_password_hash('passsword', method='sha256'))
+                  admin=False, password=generate_password_hash('passsword', method='sha256'), fullname='Michel Dupont2')
+    user_c = User(email="test3@test.fr", firstname='Michel', lastname='Dupont',
+                  fullname='Michel Dupont', admin=False, password=generate_password_hash('passsword', method='sha256'))
     user_a.save()
     user_b.save()
+    user_c.save()
     seed_teams(user_a, user_b)
 
 
